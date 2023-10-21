@@ -13,21 +13,34 @@ public class GameController : MonoBehaviour
     public bool ResettingStall { get; set; }
 
     [SerializeField] float gravityScale;
-
+    [Header("Launching Control")]
     [SerializeField] float launchSpeed;
-
+    [Header("Wind Control")]
     [SerializeField] float windSpeedVertical;
     [SerializeField] float windSpeedHorizontal;
 
+    [Header("Flying Control")]
+    [Tooltip("Applied immediate force when turning up")]
     [SerializeField] float twistUpForce;
+    [Tooltip("Applied immediate force when turning down")]
     [SerializeField] float twistDownForce;
-    [SerializeField] int twistPositionMin;
-    [SerializeField] int twistPositionMax;
-    [SerializeField] int rotationAngle;
-    
+    [Tooltip("Applied immediate intensity to forces")]
     [SerializeField] float twistMultiplier;
+    [Tooltip("How far the seed can twist forward/down before stalling")]
+    [SerializeField] int twistPositionMin;
+    [Tooltip("How far the seed can twist backwards/up before stalling")]
+    [SerializeField] int twistPositionMax;
+    [Tooltip("The rotating angle. decrease this angle when increasing the positions")]
+    [SerializeField] int rotationAngle;
+
+    [Tooltip("How long it takes to regain play control")]
     [SerializeField] float stallWaitTime;
-    
+    [Tooltip("Penalty of downward force when stalling")]
+    [SerializeField] float stallDownwardForce;
+    [Tooltip("How fast the vertical down speed is when pitching forward/down")]
+    [SerializeField] float twistDownSpeed;
+    [Tooltip("How slow the vertical up speed is when pitching backward/up")]
+    [SerializeField] float twistUpSpeed;
     
     private void Awake()
     {
@@ -129,6 +142,21 @@ public class GameController : MonoBehaviour
     {
         return stallWaitTime;
     }
+
+    public float GetTwistDownSpeed()
+    {
+        return twistDownSpeed;
+    }
+
+    public float GetTwistUpSpeed()
+    {
+        return twistUpSpeed;
+    }
+
+    public float GetStallDownwardForce()
+    {
+        return stallDownwardForce;
+    }    
 
 
 

@@ -1314,13 +1314,16 @@ MonoBehaviour:
   launchSpeed: 100
   windSpeedVertical: 10
   windSpeedHorizontal: 50
-  twistUpForce: 20
+  twistUpForce: 40
   twistDownForce: 20
-  twistPositionMin: -3
-  twistPositionMax: 3
-  rotationAngle: 15
   twistMultiplier: 1
+  twistPositionMin: -4
+  twistPositionMax: 4
+  rotationAngle: 20
   stallWaitTime: 2
+  stallDownwardForce: 100
+  twistDownSpeed: 10
+  twistUpSpeed: -5
 --- !u!4 &1171064207
 Transform:
   m_ObjectHideFlags: 0

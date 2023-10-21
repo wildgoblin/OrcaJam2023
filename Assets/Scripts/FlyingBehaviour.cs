@@ -11,6 +11,8 @@ public class FlyingBehaviour : MonoBehaviour
     GameController gc;
     private int twistPositionCurrent;
     [SerializeField] GameObject seedSprite;
+    bool twistingUp;
+    bool twistingDown;
 
     
 
@@ -21,6 +23,8 @@ public class FlyingBehaviour : MonoBehaviour
 
         twistPositionCurrent = 0;
         gc.ResettingStall = false;
+        twistingUp = false;
+        twistingDown = false;
 
         if(gc.Launching)
         {
@@ -45,10 +49,17 @@ public class FlyingBehaviour : MonoBehaviour
     }
     public void TwistDown()
     {
-        if(twistPositionCurrent <= 0)
+        if (twistingUp && twistPositionCurrent < 0)
+        {
+            Debug.Log("PREVENT TWIST DOWN");
+            twistingDown = false;
+            return;
+        }
+        twistingDown = true;
+        if (twistPositionCurrent <= 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector2(0, gc.GetTwistDownForce() * (twistPositionCurrent * gc.GetTwistMultiplier())));
+            rb.AddForce(new Vector2(rb.velocity.x * gc.GetTwistDownSpeed(), gc.GetTwistDownForce() * (twistPositionCurrent * gc.GetTwistMultiplier())));
         }
 
 
@@ -66,10 +77,17 @@ public class FlyingBehaviour : MonoBehaviour
 
     public void TwistUp()
     {
+        if(twistingDown && twistPositionCurrent > 0)
+        {
+            Debug.Log("Prevent Twist UP");
+            twistingUp = false;
+            return;
+        }
+        twistingUp = true;
         if(twistPositionCurrent >= 0 )
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector2(0, gc.GetTwistUpForce() * (twistPositionCurrent * gc.GetTwistMultiplier())));
+            rb.AddForce(new Vector2(rb.velocity.x * gc.GetTwistUpSpeed(), gc.GetTwistUpForce() * (twistPositionCurrent * gc.GetTwistMultiplier())));
         }
 
 
@@ -81,13 +99,7 @@ public class FlyingBehaviour : MonoBehaviour
             twistPositionCurrent += 1;
             RotateSeedSprite();
             StartCoroutine(ResetUpStall());
-        }
-        
-
- 
-
-        
-
+        }  
     }
 
     public void RotateSeedSprite()
@@ -103,6 +115,7 @@ public class FlyingBehaviour : MonoBehaviour
         float waitTime = gc.GetStallWaitTime() / gc.GetTwistPositionMax();
         while (gc.ResettingStall)
         {
+            rb.AddForce(new Vector2(rb.velocity.x / 2, -gc.GetStallDownwardForce()));
             while(twistPositionCurrent > 0)
             {
                 twistPositionCurrent -= 1;

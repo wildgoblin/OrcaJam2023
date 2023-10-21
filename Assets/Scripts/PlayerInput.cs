@@ -26,7 +26,7 @@ public class PlayerInput : MonoBehaviour
             }
 
         }
-        if (gc.Flying != gc.ResettingStall)
+        if (gc.Flying &&  !gc.ResettingStall)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
