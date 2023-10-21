@@ -48,6 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb6809bbeec3aa4494f5846ff2e7bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  windSounds:
+  - {fileID: 8300000, guid: 78a8aa4179a9f5c4c9924b149505ad9f, type: 3}
+  - {fileID: 8300000, guid: 66eb3eba7f91e054cb06cb9edd63f065, type: 3}
 --- !u!212 &1553803389903445269
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -112,6 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb6809bbeec3aa4494f5846ff2e7bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  windSounds: []
 --- !u!61 &6691524823783528591
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -49,13 +49,14 @@ public class FlyingBehaviour : MonoBehaviour
     }
     public void TwistDown()
     {
+        
         if (twistingUp && twistPositionCurrent < 0)
         {
-            Debug.Log("PREVENT TWIST DOWN");
             twistingDown = false;
             return;
         }
         twistingDown = true;
+        twistingUp = false;
         if (twistPositionCurrent <= 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -77,14 +78,16 @@ public class FlyingBehaviour : MonoBehaviour
 
     public void TwistUp()
     {
-        if(twistingDown && twistPositionCurrent > 0)
+        
+        if (twistingDown &&  twistPositionCurrent > 0)
         {
-            Debug.Log("Prevent Twist UP");
             twistingUp = false;
             return;
         }
+
         twistingUp = true;
-        if(twistPositionCurrent >= 0 )
+        twistingDown = false;
+        if (twistPositionCurrent >= 0 )
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(rb.velocity.x * gc.GetTwistUpSpeed(), gc.GetTwistUpForce() * (twistPositionCurrent * gc.GetTwistMultiplier())));
