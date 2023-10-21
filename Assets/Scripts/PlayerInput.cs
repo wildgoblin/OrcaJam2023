@@ -6,12 +6,15 @@ public class PlayerInput : MonoBehaviour
 {
     //References
     GameController gc;
-
+    FlyingBehaviour fb;
     
+
+
 
     private void Start()
     {
         gc = GameController.Instance;
+        fb = GetComponent<FlyingBehaviour>();
     }
     private void Update()
     {
@@ -19,8 +22,21 @@ public class PlayerInput : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                GetComponent<FlyingBehaviour>().Launch();
+                fb.Launch();
             }
+
+        }
+        if (gc.Flying != gc.ResettingStall)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                fb.TwistDown();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                fb.TwistUp();
+            }
+
         }
     }
 }

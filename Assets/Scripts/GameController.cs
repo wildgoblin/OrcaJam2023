@@ -10,12 +10,23 @@ public class GameController : MonoBehaviour
     public bool Flying { get; private set; }
     public bool Launching { get; private set; }
 
+    public bool ResettingStall { get; set; }
+
     [SerializeField] float gravityScale;
 
     [SerializeField] float launchSpeed;
 
     [SerializeField] float windSpeedVertical;
     [SerializeField] float windSpeedHorizontal;
+
+    [SerializeField] float twistUpForce;
+    [SerializeField] float twistDownForce;
+    [SerializeField] int twistPositionMin;
+    [SerializeField] int twistPositionMax;
+    [SerializeField] int rotationAngle;
+    
+    [SerializeField] float twistMultiplier;
+    [SerializeField] float stallWaitTime;
     
     
     private void Awake()
@@ -36,6 +47,8 @@ public class GameController : MonoBehaviour
     {
         Launching = true;
         Flying = false;
+        
+        
     }
 
     public void ChangeToFlying()
@@ -81,6 +94,42 @@ public class GameController : MonoBehaviour
     {
         windSpeedHorizontal = newWindSpeed;
     }
+
+    public float GetTwistDownForce()
+    {
+        return twistDownForce;
+    }
+
+    public float GetTwistUpForce()
+    {
+        return twistUpForce;
+    }
+
+    public float GetTwistMultiplier()
+    {
+        return twistMultiplier;
+    }
+
+    public float GetTwistPositionMax()
+    {
+        return twistPositionMax;
+    }
+
+    public float GetTwistPositionMin()
+    {
+        return twistPositionMin;
+    }
+
+    public float GetRotationAngle()
+    {
+        return rotationAngle;
+    }
+
+    public float GetStallWaitTime()
+    {
+        return stallWaitTime;
+    }
+
 
 
 }
