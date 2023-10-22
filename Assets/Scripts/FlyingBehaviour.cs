@@ -43,6 +43,7 @@ public class FlyingBehaviour : MonoBehaviour
         if(collision.gameObject.tag == "Ground" && !collided)
         {
             collided = true;
+            rb.angularVelocity = 0;
             rb.velocity = Vector2.zero;
             gc.ChangeToLanding();
             GetComponent<GrowingBehaviour>().PlayGrowingSequence();
@@ -168,5 +169,10 @@ public class FlyingBehaviour : MonoBehaviour
         {
             rb.velocity = new Vector2(gc.GetSpeedLimit(), rb.velocity.y );
         }        
+    }
+
+    public void ResetCollided()
+    {
+        collided = false;
     }
 }

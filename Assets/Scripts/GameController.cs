@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
 
     public bool ResettingStall { get; set; }
 
+    public bool FirstLand { get; set; } 
+
     [SerializeField] float gravityScale;
     [Header("Launching Control")]
     [SerializeField] float launchSpeed;
@@ -69,8 +71,7 @@ public class GameController : MonoBehaviour
     {
         Launching = true;
         Flying = false;
-        Landing = false;
-        
+        Landing = false;       
         
     }
 

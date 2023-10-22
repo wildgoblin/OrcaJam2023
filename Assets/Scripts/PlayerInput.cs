@@ -23,6 +23,7 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 fb.Launch();
+                GetComponent<GrowingBehaviour>().ShowSeed();
             }
 
         }
