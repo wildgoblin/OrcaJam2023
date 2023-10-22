@@ -41,6 +41,11 @@ public class GameController : MonoBehaviour
     [SerializeField] float twistDownSpeed;
     [Tooltip("How slow the vertical up speed is when pitching backward/up")]
     [SerializeField] float twistUpSpeed;
+
+    [Header("Spawn Controls")]
+    [SerializeField] int windSpawnMin;
+    [SerializeField] int windSpawnMax;
+    [SerializeField] float windSpawnSpacing;
     
     private void Awake()
     {
@@ -158,6 +163,20 @@ public class GameController : MonoBehaviour
         return stallDownwardForce;
     }    
 
+    public int GetWindSpawnTimeMin()
+    {
+        return windSpawnMin;
+    }
+
+    public int GetWindSpawnTimeMax()
+    {
+        return windSpawnMax;
+    }
+
+    public float GetWindSpawnSpacing()
+    {
+        return windSpawnSpacing;
+    }
 
 
 }
