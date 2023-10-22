@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
     public bool Flying { get; private set; }
     public bool Launching { get; private set; }
 
+    public bool Landing { get; private set; }
+
     public bool ResettingStall { get; set; }
 
     [SerializeField] float gravityScale;
@@ -20,6 +22,7 @@ public class GameController : MonoBehaviour
     [SerializeField] float windSpeedHorizontal;
 
     [Header("Flying Control")]
+    [SerializeField] float speedLimit;
     [Tooltip("Applied immediate force when turning up")]
     [SerializeField] float twistUpForce;
     [Tooltip("Applied immediate force when turning down")]
@@ -45,7 +48,8 @@ public class GameController : MonoBehaviour
     [Header("Spawn Controls")]
     [SerializeField] int windSpawnMin;
     [SerializeField] int windSpawnMax;
-    [SerializeField] float windSpawnSpacing;
+    [SerializeField] float windSpawnSpacingX;
+    [SerializeField] float windSpawnSpacingY;
     
     private void Awake()
     {
@@ -65,14 +69,29 @@ public class GameController : MonoBehaviour
     {
         Launching = true;
         Flying = false;
+        Landing = false;
         
         
     }
 
     public void ChangeToFlying()
     {
+        Landing = false;
         Launching = false;
         Flying = true;
+    }
+    public void ChangeToLanding()
+    {
+        Flying = false;
+        Launching = false;
+        Landing = true;
+    }
+
+    public void ChangeToLaunching()
+    {
+        Flying = false;
+        Launching = true;
+        Landing = false;
     }
 
     public float GetLaunchSpeed()
@@ -93,6 +112,11 @@ public class GameController : MonoBehaviour
     public void SetGravityScale(float newGravityScale)
     {
         gravityScale = newGravityScale;
+    }
+
+    public float GetSpeedLimit()
+    {
+        return speedLimit;
     }
 
     public float GetWindSpeedVertical()
@@ -173,10 +197,21 @@ public class GameController : MonoBehaviour
         return windSpawnMax;
     }
 
-    public float GetWindSpawnSpacing()
+    public float GetWindSpawnSpacingX()
     {
-        return windSpawnSpacing;
+        return windSpawnSpacingX;
     }
+
+    public float GetWindSpawnSpacingY()
+    {
+        return windSpawnSpacingY;
+    }
+
+
+
+    
+
+
 
 
 }

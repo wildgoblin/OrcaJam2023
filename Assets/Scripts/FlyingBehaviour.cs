@@ -13,6 +13,7 @@ public class FlyingBehaviour : MonoBehaviour
     [SerializeField] GameObject seedSprite;
     bool twistingUp;
     bool twistingDown;
+    bool collided;
 
     
 
@@ -25,6 +26,7 @@ public class FlyingBehaviour : MonoBehaviour
         gc.ResettingStall = false;
         twistingUp = false;
         twistingDown = false;
+        collided = false;
 
         if(gc.Launching)
         {
@@ -33,6 +35,17 @@ public class FlyingBehaviour : MonoBehaviour
         if(gc.Flying)
         {
             rb.gravityScale = gc.GetGravityScale();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Ground" && !collided)
+        {
+            collided = true;
+            rb.velocity = Vector2.zero;
+            gc.ChangeToLanding();
+            GetComponent<GrowingBehaviour>().PlayGrowingSequence();
         }
     }
 
@@ -147,5 +160,13 @@ public class FlyingBehaviour : MonoBehaviour
             yield return null;
             gc.ResettingStall = false;
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (rb.velocity.x > gc.GetSpeedLimit() )
+        {
+            rb.velocity = new Vector2(gc.GetSpeedLimit(), rb.velocity.y );
+        }        
     }
 }

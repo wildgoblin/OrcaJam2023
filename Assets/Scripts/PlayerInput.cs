@@ -18,7 +18,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void Update()
     {
-        if (gc.Launching)
+        if (gc.Launching && !gc.Landing)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -26,7 +26,7 @@ public class PlayerInput : MonoBehaviour
             }
 
         }
-        if (gc.Flying &&  !gc.ResettingStall)
+        if (gc.Flying &&  !gc.ResettingStall && !gc.Landing)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {

@@ -21,9 +21,14 @@ public class ScrollingScreen : MonoBehaviour
     [SerializeField] List<GameObject> dirtPrefabs = new List<GameObject>();
     [SerializeField] List<GameObject> rocksPrefabs = new List<GameObject>();
 
+    RectTransform section1RT;
+    RectTransform section2RT;
+
     private void Start()
     {
         gc = GameController.Instance;
+        section1RT = GetComponent<RectTransform>();
+        section2RT = GetComponent<RectTransform>();
     }
     void Update()
     {
@@ -44,6 +49,9 @@ public class ScrollingScreen : MonoBehaviour
             section1.position = new Vector3(section2.position.x + GetSectionWidth(), section1.position.y, section1.position.z);
             RemovePrefabsFromSection(section1.transform);
             CreateWindPrefabs(section1.transform);
+            CreateGroundPrefabs(section1.transform, grassPrefabs, 4);
+            CreateGroundPrefabs(section1.transform, dirtPrefabs, 1);
+            CreateGroundPrefabs(section1.transform, rocksPrefabs, 1);
         }
         // Check if the camera has moved past the second section
         else if (cameraX + (cameraWidth / 2) > section2.position.x + GetSectionWidth())
@@ -52,6 +60,9 @@ public class ScrollingScreen : MonoBehaviour
             section2.position = new Vector3(section1.position.x + GetSectionWidth(), section2.position.y, section2.position.z);
             RemovePrefabsFromSection(section2.transform);
             CreateWindPrefabs(section2.transform);
+            CreateGroundPrefabs(section2.transform, grassPrefabs, 4);
+            CreateGroundPrefabs(section1.transform, dirtPrefabs, 1);
+            CreateGroundPrefabs(section1.transform, rocksPrefabs, 1);
         }
     }
 
@@ -75,18 +86,39 @@ public class ScrollingScreen : MonoBehaviour
 
     private void CreateWindPrefabs(Transform parentTransform)
     {
-        
+        RectTransform parentRect = parentTransform.GetComponent<RectTransform>();
         int randAmount = Random.Range(gc.GetWindSpawnTimeMin(), gc.GetWindSpawnTimeMax());
-        float positionIntervalX = section1.position.x + GetSectionWidth() + (gc.GetWindSpawnSpacing() * randAmount);
-        float positionIntervalY = section1.position.y + (gc.GetWindSpawnSpacing() * randAmount);
 
-        for(int i = 0;  i < randAmount; i++) 
+        
+        for (int i = 0;  i < randAmount; i++) 
         {
+
             int randIndex = Random.Range(0, windPrefabs.Count);
             GameObject newWind = Instantiate(windPrefabs[randIndex], parentTransform);
-            newWind.transform.position = new Vector2(positionIntervalX, positionIntervalY);
+
+            float positionIntervalX = parentRect.rect.xMin + (gc.GetWindSpawnSpacingX() * i);
+            float positionIntervalY = parentRect.rect.yMin + (gc.GetWindSpawnSpacingY() * Random.Range(1, i));
+
+            
+            newWind.transform.localPosition = new Vector2(positionIntervalX, positionIntervalY);
         }
         
+    }
+
+    private void CreateGroundPrefabs(Transform parentTransform, List<GameObject> prefabGroup, float amountOfOjbects)
+    {
+        RectTransform parentRect = parentTransform.GetComponent<RectTransform>();  
+        for (int i = 0; i < amountOfOjbects; i++)
+        {
+
+            int randIndex = Random.Range(0, prefabGroup.Count-1);
+            GameObject newGroundObject = Instantiate(prefabGroup[randIndex], parentTransform);
+            float positionIntervalX = (parentRect.rect.xMin + (prefabGroup[0].GetComponent<SpriteRenderer>().size.x * i));
+            float positionIntervalY = 0;
+            
+            newGroundObject.transform.localPosition = new Vector2(positionIntervalX, positionIntervalY);
+        }
+
     }
 
 }
