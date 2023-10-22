@@ -9,6 +9,8 @@ public class GrowingBehaviour : MonoBehaviour
     [SerializeField] GameObject flowerParent;
     [SerializeField] GameObject flowerPrefab;
 
+    [SerializeField] GameObject currentFlowerCenter;
+
     //References
     Rigidbody2D rb;
 
@@ -16,6 +18,7 @@ public class GrowingBehaviour : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         transform.position = startingTransform.position;
+        
         HideSeed();
     }
     public void PlayGrowingSequence()
@@ -28,8 +31,11 @@ public class GrowingBehaviour : MonoBehaviour
         
         
         
-        GameObject newFlower = Instantiate(flowerPrefab, flowerParent.transform);
+        GameObject newFlower = Instantiate(flowerPrefab, transform);
+        currentFlowerCenter = newFlower.transform.GetChild(0).gameObject;
+        newFlower.transform.SetParent(flowerParent.transform, true);
         newFlower.transform.position = transform.position;
+
         newFlower.transform.localPosition = new Vector2(newFlower.transform.position.x, 0);
         newFlower.GetComponent<Animator>().SetTrigger("Grow");
     }
@@ -49,6 +55,11 @@ public class GrowingBehaviour : MonoBehaviour
     public void ShowSeed()
     {
         seedImage.enabled = true;
+    }
+
+    public GameObject GetCenterWaypoint()
+    {
+        return currentFlowerCenter;
     }
 
 

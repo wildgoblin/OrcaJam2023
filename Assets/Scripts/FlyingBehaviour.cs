@@ -11,6 +11,11 @@ public class FlyingBehaviour : MonoBehaviour
     GameController gc;
     private int twistPositionCurrent;
     [SerializeField] GameObject seedSprite;
+    [SerializeField] TitleAppear titleAppear;
+    [SerializeField] TitleAppear creditsAppear;
+    [SerializeField] QuoteGenerator quoteGenerator;
+    [SerializeField] Transform textsParent;
+    [SerializeField] MusicController musicController;
     bool twistingUp;
     bool twistingDown;
     bool collided;
@@ -42,16 +47,44 @@ public class FlyingBehaviour : MonoBehaviour
     {
         if(collision.gameObject.tag == "Ground" && !collided)
         {
-            collided = true;
-            rb.angularVelocity = 0;
-            rb.velocity = Vector2.zero;
-            gc.ChangeToLanding();
-            GetComponent<GrowingBehaviour>().PlayGrowingSequence();
+            LandLogic();
         }
+    }
+
+    private void LandLogic()
+    {
+        collided = true;
+        rb.angularVelocity = 0;
+        rb.transform.rotation = Quaternion.Euler(0, 0, 0);
+        rb.velocity = Vector2.zero;
+        gc.ChangeToLanding();
+        GetComponent<GrowingBehaviour>().PlayGrowingSequence();
+        if(gc.SecondLandingPassed && gc.FirstLandingPassed)
+        {
+            quoteGenerator.GenerateNewQuote(textsParent);
+
+        }
+        if (!gc.SecondLandingPassed && gc.FirstLandingPassed)
+        {
+            Debug.Log("PLAYING SECOND PASS");
+            creditsAppear.FadeIn();
+            creditsAppear.transform.SetParent(textsParent, true);
+            gc.SecondLandingPassed = true;
+        }
+        if (!gc.FirstLandingPassed)
+        {
+            titleAppear.FadeIn();
+            titleAppear.transform.SetParent(textsParent, true);
+            musicController.StartMusic();
+            gc.FirstLandingPassed = true;
+        }
+
+
     }
 
     public void Launch()
     {
+        transform.position = GetComponent<GrowingBehaviour>().GetCenterWaypoint().transform.position;
         rb.gravityScale = gc.GetGravityScale();
         rb.AddForce(new Vector2(gc.GetLaunchSpeed(), gc.GetLaunchSpeed()));
         gc.ChangeToFlying();
